@@ -12,6 +12,14 @@ class _LoginScreenState extends State<LoginScreen> {
   String userEmail = "";
   String userPassword = "";
 
+  goToQrCodeScreen() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const QrCodeScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -138,11 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const QrCodeScreen(),
-            ),
-          );
+          goToQrCodeScreen();
         },
         tooltip: 'QR code',
         child: const Icon(Icons.qr_code),

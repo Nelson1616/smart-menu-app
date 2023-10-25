@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_menu_app/api/smert_menu_api.dart';
 import 'package:smart_menu_app/models/table.dart';
+import 'package:smart_menu_app/screens/table_screen.dart';
 
 class QrCodeScreen extends StatefulWidget {
   const QrCodeScreen({super.key});
@@ -11,6 +12,14 @@ class QrCodeScreen extends StatefulWidget {
 
 class _QrCodeScreenState extends State<QrCodeScreen> {
   String tableCode = "";
+
+  goToTableScreen(RestaurantTable table) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => TableScreen(table: table),
+      ),
+    );
+  }
 
   void searchTable() async {
     try {
@@ -26,6 +35,8 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
             debugPrint(table.restaurant!.products[0].name);
           }
         }
+
+        goToTableScreen(table);
       }
     } on Exception catch (e) {
       debugPrint('$e');
