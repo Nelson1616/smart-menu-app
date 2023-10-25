@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_menu_app/api/smart_menu_socker_api.dart';
 import 'package:smart_menu_app/components/product_item.dart';
 import 'package:smart_menu_app/models/table.dart';
 
@@ -78,6 +79,8 @@ class _TableScreenState extends State<TableScreen> {
         );
       }
     }
+
+    var ws = SmartMenuSocketApi(widget.table.enterCode);
 
     return Scaffold(
       backgroundColor: Colors.red[300],

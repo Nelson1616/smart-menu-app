@@ -12,17 +12,19 @@ class ResponseJson {
 }
 
 class SmartMenuApi {
-  // String mainUrl = "http://localhost:8016/api";
-  static String mainUrl = "http://192.168.1.9:8016/api";
+  static String mainIp = "http://192.168.1.9";
+  // static String mainIp = "http://localhost";
+
+  static String mainApiUrl = "$mainIp:8016/api";
 
   static Future<http.Response> get(String url) {
     if (url[0] != '/') {
       url = '/$url';
     }
 
-    debugPrint("get: $mainUrl$url");
+    debugPrint("get: $mainApiUrl$url");
 
-    return http.get(Uri.parse(mainUrl + url));
+    return http.get(Uri.parse(mainApiUrl + url));
   }
 
   static Future<http.Response> post(String url, String json) {
@@ -30,10 +32,10 @@ class SmartMenuApi {
       url = '/$url';
     }
 
-    debugPrint("post: $mainUrl$url");
+    debugPrint("post: $mainApiUrl$url");
     debugPrint("post body: $json");
 
-    return http.post(Uri.parse(mainUrl + url),
+    return http.post(Uri.parse(mainApiUrl + url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
