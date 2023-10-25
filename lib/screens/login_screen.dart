@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_menu_app/screens/qrcode_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -136,7 +137,13 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const QrCodeScreen(),
+            ),
+          );
+        },
         tooltip: 'QR code',
         child: const Icon(Icons.qr_code),
       ),
