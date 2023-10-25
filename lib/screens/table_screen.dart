@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_menu_app/api/smart_menu_socker_api.dart';
 import 'package:smart_menu_app/components/product_item.dart';
+import 'package:smart_menu_app/models/session_user.dart';
 import 'package:smart_menu_app/models/table.dart';
 
 class TableScreen extends StatefulWidget {
@@ -19,6 +20,30 @@ class _TableScreenState extends State<TableScreen> {
   //     ),
   //   );
   // }
+
+  SmartMenuSocketApi? ws;
+
+  void onSocketUsers(data) {
+    try {
+      debugPrint('$data');
+
+      for (int i = 0; i < (data as List<dynamic>).length; i++) {
+        SessionUser sessionUser = SessionUser.fromJson(data[i]);
+        debugPrint('${sessionUser.userId}');
+
+        if (sessionUser.user != null) {
+          debugPrint(sessionUser.user!.name);
+        }
+      }
+    } on Error catch (e) {
+      debugPrint('$e');
+    }
+  }
+
+  void onSocketError(data) {
+    debugPrint('error no socket');
+    debugPrint('$data');
+  }
 
   void showErro(String error) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -45,6 +70,11 @@ class _TableScreenState extends State<TableScreen> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+
+    ws ??= SmartMenuSocketApi.getSocketByTableCode((widget.table.enterCode));
+
+    ws!.onSocketUsersListener = onSocketUsers;
+    ws!.onSocketErrorListener = onSocketError;
 
     avatars = [];
 
@@ -79,8 +109,6 @@ class _TableScreenState extends State<TableScreen> {
         );
       }
     }
-
-    var ws = SmartMenuSocketApi(widget.table.enterCode);
 
     return Scaffold(
       backgroundColor: Colors.red[300],
