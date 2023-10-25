@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:smart_menu_app/api/smert_menu_api.dart';
+import 'package:smart_menu_app/models/table.dart';
 
 class QrCodeScreen extends StatefulWidget {
   const QrCodeScreen({super.key});
@@ -10,7 +12,33 @@ class QrCodeScreen extends StatefulWidget {
 class _QrCodeScreenState extends State<QrCodeScreen> {
   String tableCode = "";
 
-  void searchTable() async {}
+  void searchTable() async {
+    try {
+      ResponseJson res = await SmartMenuApi.getTableByCode(tableCode);
+
+      if (!res.success) {
+        showErro(res.message);
+      } else {
+        RestaurantTable table = RestaurantTable.fromJson(res.data!);
+
+        if (table.restaurant != null) {
+          if (table.restaurant!.products.isNotEmpty) {
+            debugPrint(table.restaurant!.products[0].name);
+          }
+        }
+      }
+    } on Exception catch (e) {
+      debugPrint('$e');
+    }
+  }
+
+  void showErro(String error) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(error, style: const TextStyle(color: Colors.black)),
+      backgroundColor: Colors.red[300],
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
