@@ -21,8 +21,6 @@ class _TableScreenState extends State<TableScreen> {
   //   );
   // }
 
-  SmartMenuSocketApi? ws;
-
   void onSocketUsers(data) {
     try {
       debugPrint('$data');
@@ -71,10 +69,17 @@ class _TableScreenState extends State<TableScreen> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    ws ??= SmartMenuSocketApi.getSocketByTableCode((widget.table.enterCode));
+    if (SmartMenuSocketApi().tableCode != widget.table.enterCode) {
+      debugPrint(
+          "disconnecting: ${SmartMenuSocketApi().tableCode} != ${widget.table.enterCode}");
+      SmartMenuSocketApi().disconnect();
+    }
 
-    ws!.onSocketUsersListener = onSocketUsers;
-    ws!.onSocketErrorListener = onSocketError;
+    SmartMenuSocketApi().tableCode = widget.table.enterCode;
+    SmartMenuSocketApi().connect();
+
+    SmartMenuSocketApi().onSocketUsersListener = onSocketUsers;
+    SmartMenuSocketApi().onSocketErrorListener = onSocketError;
 
     avatars = [];
 
@@ -117,6 +122,13 @@ class _TableScreenState extends State<TableScreen> {
           widget.table.restaurant!.name,
           style: const TextStyle(
               fontFamily: 'Sofia', fontSize: 26, fontWeight: FontWeight.w600),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            SmartMenuSocketApi().disconnect();
+            Navigator.of(context).pop();
+          },
         ),
       ),
       body: SafeArea(
