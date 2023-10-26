@@ -34,17 +34,8 @@ class SmartMenuSocketApi {
       socket = io('${SmartMenuApi.mainIp}:3016/', <String, dynamic>{
         'transports': ['websocket'],
         'autoConnect': false,
+        'query': {'table_code': tableCode, 'session_user_id': sessionUserId}
       });
-
-      if (tableCode != null) {
-        socket!.io.options?['extraHeaders'] = {'table_code': tableCode};
-      }
-
-      if (sessionUserId != null) {
-        socket!.io.options?['extraHeaders'] = {
-          'session_user_id': sessionUserId
-        };
-      }
 
       setupSocket();
       socket!.connect();
@@ -76,8 +67,11 @@ class SmartMenuSocketApi {
 
       socket!.on('message', (data) => debugPrint('$data'));
 
+      socket!.on('connect_error', (data) => debugPrint('$data'));
+
       socket!.on('users', (data) {
         // debugPrint('$data');
+        debugPrint('users atualizado');
         if (onSocketUsersListener != null) {
           onSocketUsersListener!(data);
         }

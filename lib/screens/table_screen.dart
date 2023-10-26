@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_menu_app/api/smart_menu_socker_api.dart';
 import 'package:smart_menu_app/components/product_item.dart';
+import 'package:smart_menu_app/components/session_user_bar.dart';
 import 'package:smart_menu_app/models/session_user.dart';
 import 'package:smart_menu_app/models/table.dart';
 
@@ -21,17 +22,22 @@ class _TableScreenState extends State<TableScreen> {
   //   );
   // }
 
+  List<UserBar> sessionUsers = [];
+
   void onSocketUsers(data) {
     try {
       debugPrint('$data');
 
+      sessionUsers = [];
+
       for (int i = 0; i < (data as List<dynamic>).length; i++) {
         SessionUser sessionUser = SessionUser.fromJson(data[i]);
-        debugPrint('${sessionUser.userId}');
 
         if (sessionUser.user != null) {
-          debugPrint(sessionUser.user!.name);
+          sessionUsers.add(UserBar(sessionUser: sessionUser));
         }
+
+        setState(() {});
       }
     } on Error catch (e) {
       debugPrint('$e');
@@ -100,6 +106,8 @@ class _TableScreenState extends State<TableScreen> {
         ),
       );
     }
+
+    products = [];
 
     if (widget.table.restaurant!.products.isNotEmpty) {
       for (int i = 0; i < widget.table.restaurant!.products.length; i++) {
@@ -179,10 +187,10 @@ class _TableScreenState extends State<TableScreen> {
                               ),
                             ],
                           ),
-                          // SingleChildScrollView(
-                          //   scrollDirection: Axis.horizontal,
-                          //   child: Row(children: sessionUsers),
-                          // )
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(children: sessionUsers),
+                          )
                         ],
                       ),
                     ),
