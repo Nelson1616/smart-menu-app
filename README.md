@@ -1,16 +1,19 @@
-# smart_menu_app
+# how to run web version
 
-A new Flutter project.
+first you need to build the docker image, to do this, run the following command in your terminal at the root of the project:
 
-## Getting Started
+```
+docker build -t flutter-web .  
+```
 
-This project is a starting point for a Flutter application.
+then you need to run the image on a specific port on your machine:
 
-A few resources to get you started if this is your first Flutter project:
+```
+docker run -d -p 8080:80 --name flutter-web flutter-web
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+to stop, run this command:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+docker stop flutter-web
+```
