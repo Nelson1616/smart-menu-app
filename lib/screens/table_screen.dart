@@ -5,6 +5,7 @@ import 'package:smart_menu_app/components/product_item.dart';
 import 'package:smart_menu_app/components/session_user_bar.dart';
 import 'package:smart_menu_app/models/session_user.dart';
 import 'package:smart_menu_app/models/table.dart';
+import 'package:smart_menu_app/screens/session_screen.dart';
 
 class TableScreen extends StatefulWidget {
   final RestaurantTable table;
@@ -15,13 +16,16 @@ class TableScreen extends StatefulWidget {
 }
 
 class _TableScreenState extends State<TableScreen> {
-  // goToSessionScreen() {
-  //   Navigator.of(context).push(
-  //     MaterialPageRoute(
-  //       builder: (context) => const TableScreen(),
-  //     ),
-  //   );
-  // }
+  goToSessionScreen(SessionUser sessionUser, RestaurantTable table) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => SessionScreen(
+          sessionUser: sessionUser,
+          table: table,
+        ),
+      ),
+    );
+  }
 
   List<UserBar> sessionUsers = [];
 
@@ -80,7 +84,16 @@ class _TableScreenState extends State<TableScreen> {
       if (!response.success) {
         showErro(response.message);
       } else {
-        debugPrint('${response.data}');
+        SessionUser sessionUser =
+            SessionUser.fromJson(response.data!['sessionUser']);
+
+        RestaurantTable table =
+            RestaurantTable.fromJson(response.data!['table']);
+
+        debugPrint(
+            'session user ${sessionUser.id} in table ${table.number} at restaurant ${table.restaurant!.name}');
+
+        goToSessionScreen(sessionUser, table);
       }
     } on Error catch (e) {
       debugPrint('$e');
