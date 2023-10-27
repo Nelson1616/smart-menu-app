@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_menu_app/api/smert_menu_api.dart';
+import 'package:smart_menu_app/models/session_user.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 class SmartMenuSocketApi {
@@ -12,6 +13,8 @@ class SmartMenuSocketApi {
   Function? onSocketErrorListener;
   Function? onSocketUsersListener;
   Function? onSocketOrdersListener;
+
+  List<SessionUser> sessionUsers = [];
 
   SmartMenuSocketApi._internal();
 
@@ -70,10 +73,20 @@ class SmartMenuSocketApi {
       socket!.on('connect_error', (data) => debugPrint('$data'));
 
       socket!.on('users', (data) {
-        // debugPrint('$data');
         debugPrint('users atualizado');
+
+        sessionUsers = [];
+
+        for (int i = 0; i < (data as List<dynamic>).length; i++) {
+          SessionUser sessionUser = SessionUser.fromJson(data[i]);
+
+          if (sessionUser.user != null) {
+            sessionUsers.add(sessionUser);
+          }
+        }
+
         if (onSocketUsersListener != null) {
-          onSocketUsersListener!(data);
+          onSocketUsersListener!();
         }
       });
 

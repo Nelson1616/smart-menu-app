@@ -29,21 +29,19 @@ class _TableScreenState extends State<TableScreen> {
 
   List<UserBar> sessionUsers = [];
 
-  void onSocketUsers(data) {
+  void onSocketUsers() {
     try {
-      debugPrint('$data');
-
       sessionUsers = [];
 
-      for (int i = 0; i < (data as List<dynamic>).length; i++) {
-        SessionUser sessionUser = SessionUser.fromJson(data[i]);
+      for (int i = 0; i < SmartMenuSocketApi().sessionUsers.length; i++) {
+        SessionUser sessionUser = SmartMenuSocketApi().sessionUsers[i];
 
         if (sessionUser.user != null) {
           sessionUsers.add(UserBar(sessionUser: sessionUser));
         }
-
-        setState(() {});
       }
+
+      setState(() {});
     } on Error catch (e) {
       debugPrint('$e');
     }
@@ -103,6 +101,8 @@ class _TableScreenState extends State<TableScreen> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+
+    onSocketUsers();
 
     if (SmartMenuSocketApi().tableCode != widget.table.enterCode) {
       debugPrint(
