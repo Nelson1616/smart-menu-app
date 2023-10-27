@@ -55,4 +55,22 @@ class SmartMenuApi {
 
     return ResponseJson(json['success'], json['message'], json['data']);
   }
+
+  static Future<ResponseJson> enterTableByCode(
+      String code, String userName, int userImageId) async {
+    String body =
+        jsonEncode({"userName": userName, "userImageId": userImageId});
+
+    http.Response response = await post('tables/enter/$code', body);
+
+    Map<String, dynamic> json;
+
+    json = jsonDecode(response.body);
+
+    if (json['success'] == null) {
+      throw Exception("Invalid response from api");
+    }
+
+    return ResponseJson(json['success'], json['message'], json['data']);
+  }
 }

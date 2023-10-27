@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_menu_app/api/smart_menu_socker_api.dart';
+import 'package:smart_menu_app/api/smert_menu_api.dart';
 import 'package:smart_menu_app/components/product_item.dart';
 import 'package:smart_menu_app/components/session_user_bar.dart';
 import 'package:smart_menu_app/models/session_user.dart';
@@ -53,7 +54,7 @@ class _TableScreenState extends State<TableScreen> {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(error, style: const TextStyle(color: Colors.black)),
-      backgroundColor: Colors.red[300],
+      backgroundColor: Colors.red[500],
     ));
   }
 
@@ -69,7 +70,22 @@ class _TableScreenState extends State<TableScreen> {
   int avatarSelected = 1;
   String name = "";
 
-  void enterTable() {}
+  Future<void> enterTable(String code) async {
+    try {
+      debugPrint("name = $name, avatar selected = $avatarSelected");
+
+      ResponseJson response =
+          await SmartMenuApi.enterTableByCode(code, name, avatarSelected);
+
+      if (!response.success) {
+        showErro(response.message);
+      } else {
+        debugPrint('${response.data}');
+      }
+    } on Error catch (e) {
+      debugPrint('$e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -303,7 +319,7 @@ class _TableScreenState extends State<TableScreen> {
                         margin: const EdgeInsets.all(8),
                         child: ElevatedButton(
                           onPressed: () {
-                            enterTable();
+                            enterTable(widget.table.enterCode);
                           },
                           child: const Text(
                             'ENTRAR',
