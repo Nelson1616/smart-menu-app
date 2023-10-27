@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_menu_app/api/smart_menu_socker_api.dart';
 import 'package:smart_menu_app/screens/qrcode_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -23,7 +22,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SmartMenuSocketApi().disconnect();
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(

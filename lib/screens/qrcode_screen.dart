@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_menu_app/api/smart_menu_socker_api.dart';
 import 'package:smart_menu_app/api/smert_menu_api.dart';
 import 'package:smart_menu_app/models/table.dart';
 import 'package:smart_menu_app/screens/table_screen.dart';
@@ -54,8 +53,6 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SmartMenuSocketApi().disconnect();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -66,7 +63,6 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            SmartMenuSocketApi().disconnect();
             Navigator.of(context).pop();
           },
         ),

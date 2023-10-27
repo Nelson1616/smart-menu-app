@@ -17,14 +17,14 @@ class TableScreen extends StatefulWidget {
 
 class _TableScreenState extends State<TableScreen> {
   goToSessionScreen(SessionUser sessionUser, RestaurantTable table) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => SessionScreen(
-          sessionUser: sessionUser,
-          table: table,
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => SessionScreen(
+            sessionUser: sessionUser,
+            table: table,
+          ),
         ),
-      ),
-    );
+        (route) => true);
   }
 
   List<UserBar> sessionUsers = [];
