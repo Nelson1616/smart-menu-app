@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:smart_menu_app/api/smart_menu_socker_api.dart';
 import 'package:smart_menu_app/components/product_item.dart';
+import 'package:smart_menu_app/components/product_sell_item.dart';
 import 'package:smart_menu_app/components/session_user_bar.dart';
+import 'package:smart_menu_app/models/product.dart';
 import 'package:smart_menu_app/models/session_user.dart';
 import 'package:smart_menu_app/models/table.dart';
 
@@ -121,9 +123,12 @@ class _SessionScreenState extends State<SessionScreen> {
 
   List<UserBar> sessionUsers = [];
 
+  void makeOrder(Product product, int quantity) {
+    debugPrint("ordering $quantity of ${product.name}");
+  }
+
   void onSocketUsers() {
     try {
-      debugPrint("teeeesssste");
       sessionUsers = [];
 
       for (int i = 0; i < SmartMenuSocketApi().sessionUsers.length; i++) {
@@ -162,9 +167,11 @@ class _SessionScreenState extends State<SessionScreen> {
     for (int i = 0; i < widget.table.restaurant!.products.length; i++) {
       products.add(Container(
         margin: EdgeInsets.all(screenWidth * 0.05),
-        child: ProductItem(
-            maxWidth: screenWidth * 0.9,
-            product: widget.table.restaurant!.products.elementAt(i)),
+        child: ProductSellItem(
+          maxWidth: screenWidth * 0.9,
+          product: widget.table.restaurant!.products.elementAt(i),
+          makeOrder: makeOrder,
+        ),
       ));
     }
 
