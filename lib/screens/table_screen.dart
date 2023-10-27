@@ -17,6 +17,9 @@ class TableScreen extends StatefulWidget {
 
 class _TableScreenState extends State<TableScreen> {
   goToSessionScreen(SessionUser sessionUser, RestaurantTable table) {
+    SmartMenuSocketApi().cleanListeners();
+    SmartMenuSocketApi().join(sessionUser.id);
+
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
           builder: (context) => SessionScreen(
@@ -113,8 +116,8 @@ class _TableScreenState extends State<TableScreen> {
     SmartMenuSocketApi().tableCode = widget.table.enterCode;
     SmartMenuSocketApi().connect();
 
-    SmartMenuSocketApi().onSocketUsersListener = onSocketUsers;
-    SmartMenuSocketApi().onSocketErrorListener = onSocketError;
+    SmartMenuSocketApi().setOnSocketUsersListener(onSocketUsers);
+    SmartMenuSocketApi().setOnSocketErrorListener(onSocketError);
 
     avatars = [];
 

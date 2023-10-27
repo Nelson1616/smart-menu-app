@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smart_menu_app/api/smart_menu_socker_api.dart';
-import 'package:smart_menu_app/components/product_item.dart';
 import 'package:smart_menu_app/components/product_sell_item.dart';
 import 'package:smart_menu_app/components/session_user_bar.dart';
 import 'package:smart_menu_app/models/product.dart';
@@ -125,14 +124,21 @@ class _SessionScreenState extends State<SessionScreen> {
 
   void makeOrder(Product product, int quantity) {
     debugPrint("ordering $quantity of ${product.name}");
+
+    SmartMenuSocketApi().makeOrder(widget.sessionUser.id, product.id, quantity);
   }
 
-  void onSocketUsers() {
+  void onSocketUsersListener() {
+    debugPrint("testest");
     try {
       sessionUsers = [];
 
       for (int i = 0; i < SmartMenuSocketApi().sessionUsers.length; i++) {
         SessionUser sessionUser = SmartMenuSocketApi().sessionUsers[i];
+
+        if (sessionUser.id == widget.sessionUser.id) {
+          widget.sessionUser.amountToPay = sessionUser.amountToPay;
+        }
 
         if (sessionUser.user != null) {
           sessionUsers.add(UserBar(sessionUser: sessionUser));
@@ -156,10 +162,10 @@ class _SessionScreenState extends State<SessionScreen> {
 
     SmartMenuSocketApi().connect();
 
-    SmartMenuSocketApi().onSocketUsersListener = onSocketUsers;
-    SmartMenuSocketApi().onSocketErrorListener = onSocketError;
+    SmartMenuSocketApi().setOnSocketUsersListener(onSocketUsersListener);
+    SmartMenuSocketApi().setOnSocketErrorListener(onSocketError);
 
-    onSocketUsers();
+    onSocketUsersListener();
 
     products = [];
     orders = [];

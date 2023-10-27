@@ -128,6 +128,12 @@ class _ProductSellItemState extends State<ProductSellItem> {
                         isEnabled = false;
                       });
 
+                      Future.delayed(const Duration(milliseconds: 1000), () {
+                        setState(() {
+                          isEnabled = true;
+                        });
+                      });
+
                       widget.makeOrder(widget.product, quantity);
                     } else {
                       null;

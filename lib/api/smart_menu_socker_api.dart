@@ -14,6 +14,21 @@ class SmartMenuSocketApi {
   Function? onSocketUsersListener;
   Function? onSocketOrdersListener;
 
+  void setOnSocketErrorListener(Function onSocketErrorListener) {
+    debugPrint("setOnSocketErrorListener");
+    this.onSocketErrorListener = onSocketErrorListener;
+  }
+
+  void setOnSocketUsersListener(Function onSocketUsersListener) {
+    debugPrint("setOnSocketUsersListener = $onSocketUsersListener");
+    this.onSocketUsersListener = onSocketUsersListener;
+  }
+
+  void setOnSocketOrdersListener(Function onSocketOrdersListener) {
+    debugPrint("setOnSocketOrdersListener");
+    this.onSocketOrdersListener = onSocketOrdersListener;
+  }
+
   List<SessionUser> sessionUsers = [];
 
   SmartMenuSocketApi._internal();
@@ -23,10 +38,6 @@ class SmartMenuSocketApi {
   }
 
   void connect() {
-    onSocketErrorListener = null;
-    onSocketOrdersListener = null;
-    onSocketUsersListener = null;
-
     if (tableCode != null || sessionUserId != null) {
       if (socket != null) {
         if (socket!.connected) {
@@ -57,6 +68,12 @@ class SmartMenuSocketApi {
       socket!.disconnect();
       socket = null;
     }
+  }
+
+  void cleanListeners() {
+    onSocketErrorListener = null;
+    onSocketOrdersListener = null;
+    onSocketUsersListener = null;
   }
 
   void setupSocket() {
@@ -91,11 +108,30 @@ class SmartMenuSocketApi {
       });
 
       socket!.on('orders', (data) {
-        // debugPrint('$data');
+        debugPrint('orders');
+
         if (onSocketOrdersListener != null) {
           onSocketOrdersListener!(data);
         }
       });
     }
+  }
+
+  void join(int sessionUserId) {
+    connect();
+
+    socket!.emit("join", {
+      "session_user_id": sessionUserId,
+    });
+  }
+
+  void makeOrder(int sessionUserId, int productId, int quantity) {
+    connect();
+
+    socket!.emit("make_order", {
+      "session_user_id": sessionUserId,
+      "product_id": productId,
+      "quantity": quantity
+    });
   }
 }
