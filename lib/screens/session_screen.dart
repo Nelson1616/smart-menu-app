@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:smart_menu_app/api/smart_menu_socker_api.dart';
+import 'package:smart_menu_app/components/order_item.dart';
 import 'package:smart_menu_app/components/product_sell_item.dart';
 import 'package:smart_menu_app/components/session_user_bar.dart';
 import 'package:smart_menu_app/models/product.dart';
+import 'package:smart_menu_app/models/session_order.dart';
 import 'package:smart_menu_app/models/session_user.dart';
 import 'package:smart_menu_app/models/table.dart';
 
@@ -17,6 +19,8 @@ class SessionScreen extends StatefulWidget {
 }
 
 class _SessionScreenState extends State<SessionScreen> {
+  double screenWidth = 300;
+
   void showErro(String error) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -155,17 +159,17 @@ class _SessionScreenState extends State<SessionScreen> {
       orders = [];
 
       for (int i = 0; i < SmartMenuSocketApi().sessionOrders.length; i++) {
-        debugPrint(SmartMenuSocketApi().sessionOrders[i].product!.name);
+        SessionOrder sessionOrder = SmartMenuSocketApi().sessionOrders[i];
 
-        // SessionUser sessionUser = SmartMenuSocketApi().sessionUsers[i];
+        debugPrint(sessionOrder.product!.name);
 
-        // if (sessionUser.id == widget.sessionUser.id) {
-        //   widget.sessionUser.amountToPay = sessionUser.amountToPay;
-        // }
-
-        // if (sessionUser.user != null) {
-        //   sessionUsers.add(UserBar(sessionUser: sessionUser));
-        // }
+        orders.add(Container(
+            margin: EdgeInsets.all(screenWidth * 0.05),
+            child: OrderItem(
+              maxWidth: screenWidth,
+              sessionOrder: sessionOrder,
+              currentUser: widget.sessionUser,
+            )));
       }
 
       setState(() {});
@@ -181,7 +185,7 @@ class _SessionScreenState extends State<SessionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
+    screenWidth = MediaQuery.of(context).size.width;
 
     SmartMenuSocketApi().connect();
 
@@ -192,7 +196,6 @@ class _SessionScreenState extends State<SessionScreen> {
     onSocketUsersListener();
 
     products = [];
-    orders = [];
 
     for (int i = 0; i < widget.table.restaurant!.products.length; i++) {
       products.add(Container(
