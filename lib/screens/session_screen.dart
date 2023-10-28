@@ -129,7 +129,6 @@ class _SessionScreenState extends State<SessionScreen> {
   }
 
   void onSocketUsersListener() {
-    debugPrint("testest");
     try {
       sessionUsers = [];
 
@@ -151,6 +150,30 @@ class _SessionScreenState extends State<SessionScreen> {
     }
   }
 
+  void onSocketOrdersListener() {
+    try {
+      orders = [];
+
+      for (int i = 0; i < SmartMenuSocketApi().sessionOrders.length; i++) {
+        debugPrint(SmartMenuSocketApi().sessionOrders[i].product!.name);
+
+        // SessionUser sessionUser = SmartMenuSocketApi().sessionUsers[i];
+
+        // if (sessionUser.id == widget.sessionUser.id) {
+        //   widget.sessionUser.amountToPay = sessionUser.amountToPay;
+        // }
+
+        // if (sessionUser.user != null) {
+        //   sessionUsers.add(UserBar(sessionUser: sessionUser));
+        // }
+      }
+
+      setState(() {});
+    } on Error catch (e) {
+      debugPrint('$e');
+    }
+  }
+
   void onSocketError(data) {
     debugPrint('error no socket');
     debugPrint('$data');
@@ -164,6 +187,7 @@ class _SessionScreenState extends State<SessionScreen> {
 
     SmartMenuSocketApi().setOnSocketUsersListener(onSocketUsersListener);
     SmartMenuSocketApi().setOnSocketErrorListener(onSocketError);
+    SmartMenuSocketApi().setOnSocketOrdersListener(onSocketOrdersListener);
 
     onSocketUsersListener();
 

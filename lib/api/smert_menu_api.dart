@@ -12,7 +12,8 @@ class ResponseJson {
 }
 
 class SmartMenuApi {
-  static String mainIp = "http://192.168.1.9";
+  // static String mainIp = "http://192.168.1.9";
+  static String mainIp = "http://172.20.10.13";
   // static String mainIp = "http://localhost";
 
   static String mainApiUrl = "$mainIp:8016/api";

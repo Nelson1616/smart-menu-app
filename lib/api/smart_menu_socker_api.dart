@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_menu_app/api/smert_menu_api.dart';
+import 'package:smart_menu_app/models/session_order.dart';
 import 'package:smart_menu_app/models/session_user.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -30,6 +31,8 @@ class SmartMenuSocketApi {
   }
 
   List<SessionUser> sessionUsers = [];
+
+  List<SessionOrder> sessionOrders = [];
 
   SmartMenuSocketApi._internal();
 
@@ -108,10 +111,24 @@ class SmartMenuSocketApi {
       });
 
       socket!.on('orders', (data) {
-        debugPrint('orders');
+        try {
+          debugPrint('orders atualizado');
 
-        if (onSocketOrdersListener != null) {
-          onSocketOrdersListener!(data);
+          sessionOrders = [];
+
+          for (int i = 0; i < (data as List<dynamic>).length; i++) {
+            SessionOrder sessionOrder = SessionOrder.fromJson(data[i]);
+
+            // if (sessionOrder.product != null) {
+            sessionOrders.add(sessionOrder);
+            // }
+          }
+
+          if (onSocketOrdersListener != null) {
+            onSocketOrdersListener!();
+          }
+        } on Error catch (e) {
+          debugPrint('$e');
         }
       });
     }
