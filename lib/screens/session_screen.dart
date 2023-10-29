@@ -360,7 +360,7 @@ class _SessionScreenState extends State<SessionScreen> {
                               context: context,
                               builder: (BuildContext context) =>
                                   StatefulBuilder(
-                                builder: (context, setState) =>
+                                builder: (dialogContext, setState) =>
                                     SingleChildScrollView(
                                   child: Dialog(
                                     child: Container(
@@ -440,6 +440,22 @@ class _SessionScreenState extends State<SessionScreen> {
                                               children: [
                                                 Text("Pagar com Cartão"),
                                                 Icon(Icons.credit_card),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.all(10),
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.pop(dialogContext);
+                                            },
+                                            child: const Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text("Cancelar"),
+                                                Icon(Icons.cancel),
                                               ],
                                             ),
                                           ),
