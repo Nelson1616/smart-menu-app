@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+    # image project
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        volumes:
+            - ./:/app/
+        ports:
+            - "8116:8080"
