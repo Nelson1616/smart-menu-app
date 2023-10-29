@@ -103,8 +103,13 @@ class SmartMenuSocketApi {
 
         sessionUsers = [];
 
-        for (int i = 0; i < (data as List<dynamic>).length; i++) {
-          SessionUser sessionUser = SessionUser.fromJson(data[i]);
+        Map<String, dynamic> response = data;
+
+        for (int i = 0;
+            i < (response['sessionUsers'] as List<dynamic>).length;
+            i++) {
+          SessionUser sessionUser =
+              SessionUser.fromJson(response['sessionUsers'][i]);
 
           if (sessionUser.user != null) {
             sessionUsers.add(sessionUser);
@@ -122,8 +127,13 @@ class SmartMenuSocketApi {
 
           sessionOrders = [];
 
-          for (int i = 0; i < (data as List<dynamic>).length; i++) {
-            SessionOrder sessionOrder = SessionOrder.fromJson(data[i]);
+          Map<String, dynamic> response = data;
+
+          for (int i = 0;
+              i < (response['sessionOrders'] as List<dynamic>).length;
+              i++) {
+            SessionOrder sessionOrder =
+                SessionOrder.fromJson(response['sessionOrders'][i]);
 
             // if (sessionOrder.product != null) {
             sessionOrders.add(sessionOrder);
