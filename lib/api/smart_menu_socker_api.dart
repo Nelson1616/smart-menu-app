@@ -171,4 +171,10 @@ class SmartMenuSocketApi {
     socket!.emit("not_help_with_order",
         {"session_user_id": sessionUserId, "session_order_id": sessionOrderId});
   }
+
+  void callWaiter(int sessionUserId) {
+    connect();
+
+    socket!.emit("call_waiter", {"session_user_id": sessionUserId});
+  }
 }

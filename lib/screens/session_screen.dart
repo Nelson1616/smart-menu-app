@@ -117,6 +117,21 @@ class _SessionScreenState extends State<SessionScreen> {
   }
 
   bool makeWaiterCall() {
+    if (makeWaiterCallIsEnabled) {
+      setState(() {
+        makeWaiterCallIsEnabled = false;
+      });
+
+      SmartMenuSocketApi().callWaiter(widget.sessionUser.id);
+
+      Future.delayed(const Duration(seconds: 3)).then((value) {
+        setState(() {
+          makeWaiterCallIsEnabled = true;
+        });
+      });
+    } else {
+      null;
+    }
     return true;
   }
 
@@ -483,21 +498,7 @@ class _SessionScreenState extends State<SessionScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            if (makeWaiterCallIsEnabled) {
-              setState(() {
-                makeWaiterCallIsEnabled = false;
-              });
-
-              // await makeWaiterCall().then((value) {
-              //   Future.delayed(const Duration(seconds: 3)).then((value) {
-              //     setState(() {
-              //       makeWaiterCallIsEnabled = true;
-              //     });
-              //   });
-              // });
-            } else {
-              null;
-            }
+            makeWaiterCall();
           },
           tooltip: 'Chamar Garçom',
           child: const Icon(Icons.waving_hand),
