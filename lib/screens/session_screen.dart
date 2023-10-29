@@ -132,7 +132,7 @@ class _SessionScreenState extends State<SessionScreen> {
     SmartMenuSocketApi().makeOrder(widget.sessionUser.id, product.id, quantity);
   }
 
-  void onSocketUsersListener() {
+  void onSocketUsersListener({bool updateState = true}) {
     try {
       sessionUsers = [];
 
@@ -148,7 +148,9 @@ class _SessionScreenState extends State<SessionScreen> {
         }
       }
 
-      setState(() {});
+      if (updateState) {
+        setState(() {});
+      }
     } on Error catch (e) {
       debugPrint('$e');
     }
@@ -160,8 +162,6 @@ class _SessionScreenState extends State<SessionScreen> {
 
       for (int i = 0; i < SmartMenuSocketApi().sessionOrders.length; i++) {
         SessionOrder sessionOrder = SmartMenuSocketApi().sessionOrders[i];
-
-        debugPrint(sessionOrder.product!.name);
 
         orders.add(Container(
             margin: EdgeInsets.all(screenWidth * 0.05),
@@ -193,7 +193,7 @@ class _SessionScreenState extends State<SessionScreen> {
     SmartMenuSocketApi().setOnSocketErrorListener(onSocketError);
     SmartMenuSocketApi().setOnSocketOrdersListener(onSocketOrdersListener);
 
-    onSocketUsersListener();
+    onSocketUsersListener(updateState: false);
 
     products = [];
 

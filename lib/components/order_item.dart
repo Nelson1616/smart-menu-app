@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_menu_app/api/smart_menu_socker_api.dart';
 import 'package:smart_menu_app/components/session_user_bar.dart';
 import 'package:smart_menu_app/models/session_order.dart';
 import 'package:smart_menu_app/models/session_user.dart';
@@ -55,12 +56,8 @@ class _OrderItemState extends State<OrderItem> {
         width: widget.maxWidth * 0.8,
         child: ElevatedButton(
           onPressed: () async {
-            // try {
-            //   await widget.controller
-            //       .helpWithOrder(context, widget.sessionOrder.id);
-            // } on Exception catch (e) {
-            //   widget.controller.showErro(context, e);
-            // }
+            SmartMenuSocketApi()
+                .helpWithOrder(widget.currentUser.id, widget.sessionOrder.id);
           },
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -83,12 +80,8 @@ class _OrderItemState extends State<OrderItem> {
         width: widget.maxWidth * 0.8,
         child: ElevatedButton(
           onPressed: () async {
-            // try {
-            //   await widget.controller
-            //       .notHelpWithOrder(context, widget.sessionOrder.id);
-            // } on Exception catch (e) {
-            //   widget.controller.showErro(context, e);
-            // }
+            SmartMenuSocketApi().notHelpWithOrder(
+                widget.currentUser.id, widget.sessionOrder.id);
           },
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

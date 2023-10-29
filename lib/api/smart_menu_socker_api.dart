@@ -16,18 +16,24 @@ class SmartMenuSocketApi {
   Function? onSocketOrdersListener;
 
   void setOnSocketErrorListener(Function onSocketErrorListener) {
-    debugPrint("setOnSocketErrorListener");
-    this.onSocketErrorListener = onSocketErrorListener;
+    if (this.onSocketErrorListener != onSocketErrorListener) {
+      debugPrint("setOnSocketErrorListener");
+      this.onSocketErrorListener = onSocketErrorListener;
+    }
   }
 
   void setOnSocketUsersListener(Function onSocketUsersListener) {
-    debugPrint("setOnSocketUsersListener = $onSocketUsersListener");
-    this.onSocketUsersListener = onSocketUsersListener;
+    if (this.onSocketUsersListener != onSocketUsersListener) {
+      debugPrint("setOnSocketUsersListener = $onSocketUsersListener");
+      this.onSocketUsersListener = onSocketUsersListener;
+    }
   }
 
   void setOnSocketOrdersListener(Function onSocketOrdersListener) {
-    debugPrint("setOnSocketOrdersListener");
-    this.onSocketOrdersListener = onSocketOrdersListener;
+    if (this.onSocketOrdersListener != onSocketOrdersListener) {
+      debugPrint("setOnSocketOrdersListener");
+      this.onSocketOrdersListener = onSocketOrdersListener;
+    }
   }
 
   List<SessionUser> sessionUsers = [];
@@ -150,5 +156,19 @@ class SmartMenuSocketApi {
       "product_id": productId,
       "quantity": quantity
     });
+  }
+
+  void helpWithOrder(int sessionUserId, int sessionOrderId) {
+    connect();
+
+    socket!.emit("help_with_order",
+        {"session_user_id": sessionUserId, "session_order_id": sessionOrderId});
+  }
+
+  void notHelpWithOrder(int sessionUserId, int sessionOrderId) {
+    connect();
+
+    socket!.emit("not_help_with_order",
+        {"session_user_id": sessionUserId, "session_order_id": sessionOrderId});
   }
 }
